@@ -3,9 +3,10 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 
+client.toolbarMode = "minimal"
+
 st.title("Web Application for Data Analysis")
 
-client.toolbarMode = "minimal"
 
 
 
