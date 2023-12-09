@@ -7,9 +7,8 @@ st.title("Web Application for Data Analysis")
 
 hide_streamlit_style = """
 <style>
-  .st-emotion-cache-zq5wmm ezrtsby0 {visibility: hidden;}
+  header {visibility: hidden;}
   footer {visibility: hidden;}
-  viewerBadge_link__qRIco {visibility: hidden;}
 </style>
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
