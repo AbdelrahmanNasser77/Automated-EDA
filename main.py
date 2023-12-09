@@ -7,7 +7,7 @@ st.title("Web Application for Data Analysis")
 
 hide_streamlit_style = """
 <style>
-  MainMenu {visibility: hidden;}
+  #MainMenu {visibility: hidden;}
   footer {visibility: hidden;}
   .stDeployButton {visibility: hidden;}
 </style>
