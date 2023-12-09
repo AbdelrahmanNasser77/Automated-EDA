@@ -5,16 +5,6 @@ import plotly.express as px
 
 st.title("Web Application for Data Analysis")
 
-custom_css = """
-<style>
-#GithubIcon {
-  visibility: hidden;
-}
-</style>
-"""
-
-st.markdown(custom_css, unsafe_allow_html=True)
-
 uploaded_file = st.file_uploader("Upload a dataset", type=["csv", "xlsx" , "xls", "xlsm", "xlsb", "odf", "ods", "odt"], label_visibility="collapsed")
 
 if uploaded_file:
