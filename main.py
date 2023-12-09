@@ -9,11 +9,10 @@ hide_streamlit_style = """
 <style>
   header {visibility: hidden;}
   footer {visibility: hidden;}
-  .viewerBadge_container__r5tak styles_viewerBadge__CvC9N {visibility: hidden;}
+  .viewerBadge_link__qRIco {visibility: hidden;}
 </style>
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
-
 
 uploaded_file = st.file_uploader("Upload a dataset", type=["csv", "xlsx" , "xls", "xlsm", "xlsb", "odf", "ods", "odt"], label_visibility="collapsed")
 
