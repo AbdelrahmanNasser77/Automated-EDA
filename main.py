@@ -5,6 +5,10 @@ import plotly.express as px
 
 st.title("Web Application for Data Analysis")
 
+client.toolbarMode = "minimal"
+
+
+
 uploaded_file = st.file_uploader("Upload a dataset", type=["csv", "xlsx" , "xls", "xlsm", "xlsb", "odf", "ods", "odt"], label_visibility="collapsed")
 
 if uploaded_file:
