@@ -3,13 +3,7 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 
-hide_button_style = """
-<style>
-.stDeployButton {display: none;}
-</style>
-"""
-
-st.markdown(hide_button_style, unsafe_allow_html=True)
+client.toolbarMode = "minimal"
 
 st.title("Web Application for Data Analysis")
 
