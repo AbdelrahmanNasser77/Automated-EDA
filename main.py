@@ -3,11 +3,9 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 
-client.toolbarMode = "minimal"
-
 st.title("Web Application for Data Analysis")
 
-uploaded_file = st.file_uploader("Upload a dataset", type=["csv", "xlsx" , "xls", "xlsm", "xlsb", "odf", "ods"], label_visibility="collapsed")
+uploaded_file = st.file_uploader("Upload a dataset", type=["csv", "xlsx" , "xls", "xlsm", "xlsb", "odf", "ods", "odt"], label_visibility="collapsed")
 
 if uploaded_file:
     file_extension = uploaded_file.name.split(".")[-1]
