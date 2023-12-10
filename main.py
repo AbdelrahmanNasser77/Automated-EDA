@@ -14,12 +14,12 @@ hide_streamlit_style = """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 uploaded_file = st.file_uploader("Upload a dataset", type=["csv", "xlsx" , "xls", "xlsm", "xlsb", "odf", "ods", "odt"], label_visibility="collapsed")
-
 if uploaded_file:
     file_extension = uploaded_file.name.split(".")[-1]
     
     if file_extension == "csv":
         df = pd.read_csv(uploaded_file)
+      
     elif file_extension in ["xlsx", "xls", "xlsx", "xlsm", "xlsb", "odf", "ods" , "odt"]:
         df = pd.read_excel(uploaded_file)
 
@@ -223,32 +223,31 @@ if uploaded_file:
         pass
 
     elif analysis_method == "Univariate Analysis":
-
         st.sidebar.header("Choose a column to visualize")
 
         col = st.sidebar.selectbox(label= "Select a column", options= df.columns)
 
         if col in num_cols:           
-            graph_types = ["Histogram" , "Box Plot"]
+            st.write(df[col].value_counts())
 
-            container = st.container()
-            placeholders = [container.empty() for _ in graph_types]
+            graph_types = ["Histogram" , "Box Plot"]
 
             for i, graph_type in enumerate(graph_types):
                 checked = st.sidebar.checkbox(graph_type)
                 
                 if checked:
+                    st.subheader(f"{graph_type} for \"{col}\"")
 
                     if graph_type == "Histogram":
                         nbins = st.slider(label="Select number of bins" , min_value= 5 , max_value= 50 , step= 5)
                         fig = px.histogram(data_frame= df , x = col, text_auto=True , nbins=nbins )
                         fig.update_layout(bargap = 0.1)
                         fig.update_traces(textposition = "outside" , textfont_size = 15)
+                        st.plotly_chart(fig)
                     
                     elif graph_type == "Box Plot":
                         fig = px.box(data_frame= df , y = col)
-
-                    placeholders[i].plotly_chart(fig)
+                        st.plotly_chart(fig)
 
         elif col in cat_cols:
             col_count = df[col].value_counts()
@@ -256,7 +255,7 @@ if uploaded_file:
 
             method = st.sidebar.radio(label= "Choose Selection Method" , 
                                       options=["All" , "Percentage" , "Top"]
-                                      )
+                                    )
 
             if method == "All":
                 pass
@@ -278,16 +277,14 @@ if uploaded_file:
                 top_selection = st.sidebar.number_input("Enter: " , min_value=1 , max_value= df.shape[0] , step=1)
                 col_count = col_count.head(top_selection)
 
-
+            st.write(col_count)
             graph_types = ["Bar Plot" , "Pie Chart"]
 
-            container = st.container()
-            placeholders = [container.empty() for _ in graph_types]
-            
             for i, graph_type in enumerate(graph_types):
                 checked = st.sidebar.checkbox(graph_type)
                 
                 if checked:
+                    st.subheader(f"{graph_type} for \"{col}\"")
 
                     if graph_type == "Bar Plot":
                         fig = px.bar(
@@ -301,6 +298,7 @@ if uploaded_file:
                             )
                         fig.update_traces(textposition = "outside")
                         fig.update_layout(uniformtext_minsize = 10)
+                        st.plotly_chart(fig)
                     
                     elif graph_type == "Pie Chart":
                         fig = px.pie(
@@ -311,10 +309,7 @@ if uploaded_file:
                         fig.update_layout(width=760, height=520)
                         fig.update_layout({'font': {'size': 18}, })
                         fig.update_traces(textposition = 'inside' , textinfo = 'label+percent')
-
-
-                    placeholders[i].plotly_chart(fig)
-
+                        st.plotly_chart(fig)
         
     elif analysis_method == "Bivariate Analaysis":
         
@@ -414,37 +409,47 @@ if uploaded_file:
         df_y = df.loc[df[y_axis].isin(y_axis_count.index)]
 
         crossed = pd.crosstab(index=df_x[x_axis], columns=df_y[y_axis])
+        st.write(crossed)
         
         if x_axis in num_cols:
             graph_types = ["Bar Plot" , "Box Plot", "Line Chart" , "Scatter Plot"]
-
-            container = st.container()
-            placeholders = [container.empty() for _ in graph_types]
 
             for i, graph_type in enumerate(graph_types):
                 checked = st.sidebar.checkbox(graph_type)
                 
                 if checked:
+                    st.subheader(f"{graph_type} for relation between \"{x_axis}\" & \"{y_axis}\"")
 
                     if graph_type == "Bar Plot":
                         fig = px.bar(data_frame= crossed , barmode="group", text_auto=True)
                         fig.update_traces(textposition = "outside")
                         fig.update_layout(uniformtext_minsize = 10)
+                        st.plotly_chart(fig)
                     
                     elif graph_type == "Box Plot":
                         fig = px.box(data_frame= crossed)
+                        st.plotly_chart(fig)
 
                     elif graph_type == "Line Chart":
                         fig = px.line(data_frame=crossed)
+                        st.plotly_chart(fig)
 
                     elif graph_type == "Scatter Plot":
-                        fig = px.scatter(data_frame= crossed)
+                        fig = px.scatter(data_frame= crossed, symbol= y_axis)
+                        st.plotly_chart(fig)
 
-                    placeholders[i].plotly_chart(fig)
 
-        elif x_axis in cat_cols:            
-            bar_chart = px.bar(data_frame= crossed, barmode= "group")
-            bar_chart.update_traces(textposition = "outside")
-            bar_chart.update_layout(uniformtext_minsize = 10)
-            st.plotly_chart(bar_chart)
-        
+        elif x_axis in cat_cols: 
+            graph_types = ["Bar Plot"]
+
+            for i, graph_type in enumerate(graph_types):
+                checked = st.sidebar.checkbox(graph_type)
+                
+                if checked:
+                    st.subheader(f"{graph_type} for relation between \"{x_axis}\" & \"{y_axis}\"")
+
+                    if graph_type == "Bar Plot":            
+                        bar_chart = px.bar(data_frame= crossed, barmode= "group")
+                        bar_chart.update_traces(textposition = "outside")
+                        bar_chart.update_layout(uniformtext_minsize = 10)
+                        st.plotly_chart(bar_chart)
